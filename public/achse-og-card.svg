@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <!-- ACHSE LLP Rich Open Graph Share Card (1200x630) -->
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F2A4A" />
+      <stop offset="60%" stop-color="#0A1D33" />
+      <stop offset="100%" stop-color="#061221" />
+    </linearGradient>
+    
+    <!-- Grid Pattern -->
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#FFFFFF" stroke-width="0.75" stroke-opacity="0.06" />
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <rect width="1200" height="630" fill="url(#grid)" />
+
+  <!-- Subtle Blueprint Highlight Circle -->
+  <circle cx="950" cy="315" r="220" stroke="#38BDF8" stroke-width="1.5" stroke-opacity="0.25" stroke-dasharray="6 4" fill="none" />
+  <circle cx="950" cy="315" r="160" stroke="#D97706" stroke-width="1.2" stroke-opacity="0.3" fill="none" />
+
+  <!-- Left Content Block -->
+  <g transform="translate(100, 120)">
+    <!-- Brand Kicker -->
+    <text x="0" y="30" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="700" font-size="16" letter-spacing="4" fill="#D97706">ACHSE LLP · PUNE, INDIA · EST. 2026</text>
+    
+    <!-- Main SEO Title -->
+    <text x="0" y="100" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="800" font-size="52" fill="#FFFFFF" letter-spacing="-1">
+      Precision Cold Forging Tooling,
+    </text>
+    <text x="0" y="165" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="800" font-size="52" fill="#38BDF8" letter-spacing="-1">
+      Dies, Gauges &amp; Fasteners
+    </text>
+
+    <!-- Subtitle / Value Prop -->
+    <text x="0" y="230" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="400" font-size="22" fill="#CBD5E1">
+      Tungsten Carbide Heading Dies · Verified Thread &amp; Plug Gauges
+    </text>
+    <text x="0" y="265" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-weight="400" font-size="22" fill="#94A3B8">
+      High-Tensile Fastener Supply · CNC Machining · Cold Forging Design Support
+    </text>
+
+    <!-- Badges Strip -->
+    <g transform="translate(0, 325)">
+      <!-- Badge 1 -->
+      <rect x="0" y="0" width="180" height="42" rx="6" fill="#1E3A5F" stroke="#334E68" stroke-width="1" />
+      <text x="90" y="26" font-family="'JetBrains Mono', monospace" font-size="13" font-weight="600" fill="#F8FAFC" text-anchor="middle">SUPPLIED TO DRAWING</text>
+      
+      <!-- Badge 2 -->
+      <rect x="195" y="0" width="195" height="42" rx="6" fill="#1E3A5F" stroke="#334E68" stroke-width="1" />
+      <text x="292" y="26" font-family="'JetBrains Mono', monospace" font-size="13" font-weight="600" fill="#38BDF8" text-anchor="middle">CALIBRATED GAUGES</text>
+
+      <!-- Badge 3 -->
+      <rect x="405" y="0" width="170" height="42" rx="6" fill="#1E3A5F" stroke="#334E68" stroke-width="1" />
+      <text x="490" y="26" font-family="'JetBrains Mono', monospace" font-size="13" font-weight="600" fill="#D97706" text-anchor="middle">PUNE INDUSTRIAL HUB</text>
+    </g>
+  </g>
+
+  <!-- Right Logo & 3D Symbol -->
+  <g transform="translate(850, 215)">
+    <!-- Coordinate Symbol -->
+    <circle cx="100" cy="100" r="85" stroke="#64748B" stroke-width="2" fill="none" />
+    <line x1="100" y1="100" x2="100" y2="15" stroke="#FFFFFF" stroke-width="3" />
+    <polygon points="100,5 93,20 107,20" fill="#FFFFFF" />
+    <text x="100" y="0" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="16" fill="#FFFFFF" text-anchor="middle">Z</text>
+
+    <line x1="100" y1="100" x2="185" y2="100" stroke="#FFFFFF" stroke-width="3" />
+    <polygon points="195,100 180,93 180,107" fill="#FFFFFF" />
+    <text x="210" y="105" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="16" fill="#FFFFFF" text-anchor="start">Y</text>
+
+    <line x1="100" y1="100" x2="35" y2="165" stroke="#FFFFFF" stroke-width="3" />
+    <polygon points="25,175 32,160 48,172" fill="#FFFFFF" />
+    <text x="15" y="195" font-family="'Plus Jakarta Sans', sans-serif" font-weight="800" font-size="16" fill="#FFFFFF" text-anchor="end">X</text>
+
+    <!-- 3D 'A' Monogram -->
+    <polygon points="100,35 115,50 160,165 135,165 96,80" fill="#334E68" />
+    <polygon points="100,35 45,165 72,165 95,115 108,115 100,35" fill="#FFFFFF" />
+    <polygon points="100,35 115,50 96,80 120,132 160,165 135,165 102,95" fill="#CBD5E1" />
+  </g>
+</svg>

@@ -1,0 +1,9 @@
+# robots.txt for ACHSE LLP (https://achse.in)
+# Allow full search engine indexing across all major crawlers
+
+User-agent: *
+Allow: /
+Disallow: /api/
+
+# Specify XML sitemap location
+Sitemap: https://achse.in/sitemap.xml

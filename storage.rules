@@ -1,0 +1,43 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() &&
+        firestore.exists(/databases/(default)/documents/admins/$(request.auth.uid));
+    }
+
+    function isValidDrawing() {
+      return request.resource.size < 10 * 1024 * 1024 // 10MB limit
+        && (
+          request.resource.contentType.matches('application/pdf') ||
+          request.resource.contentType.matches('image/.*') ||
+          request.resource.contentType.matches('application/octet-stream') ||
+          request.resource.contentType.matches('application/x-dwg') ||
+          request.resource.contentType.matches('application/acad') ||
+          request.resource.contentType.matches('application/step') ||
+          request.resource.contentType.matches('model/step') ||
+          request.resource.contentType.matches('application/iges') ||
+          request.resource.contentType.matches('text/plain')
+        );
+    }
+
+    // Default deny
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+
+    // Pending drawings folder:
+    // Public can upload allowed file types under 10MB; only authenticated admins can read
+    match /drawings/{rfqNumber}/{fileName} {
+      allow write: if isValidDrawing();
+      allow read: if isAdmin();
+      allow delete: if isAdmin();
+    }
+  }
+}

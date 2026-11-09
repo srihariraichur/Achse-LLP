@@ -1,0 +1,70 @@
+{
+  "entities": {
+    "RFQ": {
+      "title": "Request for Quotation",
+      "description": "Quotation inquiries submitted from the public ACHSE website with drawing specs",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "rfqNumber": { "type": "string", "maxLength": 64 },
+        "name": { "type": "string", "maxLength": 100 },
+        "company": { "type": "string", "maxLength": 120 },
+        "email": { "type": "string", "format": "email", "maxLength": 120 },
+        "phone": { "type": "string", "maxLength": 30 },
+        "productCategory": { "type": "string", "maxLength": 60 },
+        "productName": { "type": "string", "maxLength": 120 },
+        "message": { "type": "string", "maxLength": 2000 },
+        "attachmentUrls": { "type": "array" },
+        "status": { "type": "string", "enum": ["New", "In Progress", "Quoted", "Closed"] },
+        "isRead": { "type": "boolean" },
+        "adminNotes": { "type": "string", "maxLength": 2000 },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["rfqNumber", "name", "company", "email", "phone", "productCategory", "message", "status", "isRead", "createdAt"]
+    },
+    "ContactMessage": {
+      "title": "Contact Submission",
+      "description": "General and technical inquiries submitted through the contact desk",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "name": { "type": "string", "maxLength": 100 },
+        "company": { "type": "string", "maxLength": 120 },
+        "email": { "type": "string", "format": "email", "maxLength": 120 },
+        "phone": { "type": "string", "maxLength": 30 },
+        "subject": { "type": "string", "maxLength": 150 },
+        "message": { "type": "string", "maxLength": 2000 },
+        "isRead": { "type": "boolean" },
+        "status": { "type": "string", "enum": ["New", "Replied", "Closed"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "company", "email", "phone", "message", "isRead", "status", "createdAt"]
+    },
+    "AdminUser": {
+      "title": "Admin Authorization Record",
+      "description": "Allowed administrator document identified by Firebase Auth UID",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "format": "email", "maxLength": 120 },
+        "role": { "type": "string", "enum": ["admin", "superadmin"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role"]
+    }
+  },
+  "firestore": {
+    "/rfqs/{rfqId}": {
+      "schema": "RFQ",
+      "description": "Customer quotation submissions and technical drawing inquiries"
+    },
+    "/contacts/{contactId}": {
+      "schema": "ContactMessage",
+      "description": "Public contact messages submitted to ACHSE desk"
+    },
+    "/admins/{adminUid}": {
+      "schema": "AdminUser",
+      "description": "Authorized administrator whitelist documents"
+    }
+  }
+}

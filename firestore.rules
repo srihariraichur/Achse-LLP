@@ -1,0 +1,91 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Default deny all access
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isValidString(str, minLen, maxLen) {
+      return str is string && str.size() >= minLen && str.size() <= maxLen;
+    }
+
+    function isValidEmail(email) {
+      return isValidString(email, 5, 120) && email.matches('^[^@]+@[^@]+\\.[^@]+$');
+    }
+
+    // Validation for RFQ creation by public users
+    function isValidRFQ(data) {
+      return data.keys().hasAll(['rfqNumber', 'name', 'company', 'email', 'phone', 'productCategory', 'message', 'status', 'isRead', 'createdAt'])
+        && data.keys().hasOnly(['rfqNumber', 'name', 'company', 'email', 'phone', 'productCategory', 'productName', 'message', 'attachmentUrls', 'status', 'isRead', 'createdAt', 'adminNotes'])
+        && isValidString(data.rfqNumber, 5, 64)
+        && isValidString(data.name, 1, 100)
+        && isValidString(data.company, 1, 120)
+        && isValidEmail(data.email)
+        && isValidString(data.phone, 5, 30)
+        && isValidString(data.productCategory, 1, 60)
+        && isValidString(data.message, 1, 2000)
+        && data.status == 'New'
+        && data.isRead == false
+        && data.attachmentUrls is list
+        && data.attachmentUrls.size() <= 10;
+    }
+
+    // Validation for Contact Message creation by public users
+    function isValidContact(data) {
+      return data.keys().hasAll(['name', 'company', 'email', 'phone', 'message', 'isRead', 'status', 'createdAt'])
+        && data.keys().hasOnly(['name', 'company', 'email', 'phone', 'subject', 'message', 'isRead', 'status', 'createdAt', 'adminNotes'])
+        && isValidString(data.name, 1, 100)
+        && isValidString(data.company, 1, 120)
+        && isValidEmail(data.email)
+        && isValidString(data.phone, 5, 30)
+        && isValidString(data.message, 1, 2000)
+        && data.status == 'New'
+        && data.isRead == false;
+    }
+
+    // Admins Collection: Read-only for authenticated admins; creation is restricted
+    match /admins/{adminUid} {
+      allow read: if isSignedIn() && (request.auth.uid == adminUid || isAdmin());
+      allow write: if false; // Provisioned exclusively via Firebase Console / Cloud functions
+    }
+
+    // RFQs Collection:
+    // Public can create with strict validation.
+    // Only verified administrators can read, update, or delete.
+    match /rfqs/{rfqId} {
+      allow create: if isValidRFQ(incoming());
+      allow read: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // Contacts Collection:
+    // Public can create with strict validation.
+    // Only verified administrators can read, update, or delete.
+    match /contacts/{contactId} {
+      allow create: if isValidContact(incoming());
+      allow read: if isAdmin();
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+  }
+}

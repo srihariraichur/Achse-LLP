@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" width="100%" height="100%" fill="none">
+  <!-- ACHSE LLP Official Brand Identity (Vector Recreation) -->
+  
+  <!-- 1. Coordinate System & Reference Datum Circle -->
+  <g id="coordinate-system" stroke="#0F172A" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Reference Datum Circle -->
+    <circle cx="300" cy="240" r="145" stroke="#0F172A" stroke-width="3" fill="none" />
+
+    <!-- Dashed Negative Axes -->
+    <line x1="300" y1="240" x2="300" y2="430" stroke="#0F172A" stroke-width="2.5" stroke-dasharray="8 6" />
+    <line x1="300" y1="240" x2="110" y2="240" stroke="#0F172A" stroke-width="2.5" stroke-dasharray="8 6" />
+    <line x1="300" y1="240" x2="445" y2="95" stroke="#0F172A" stroke-width="2.5" stroke-dasharray="8 6" />
+
+    <!-- Positive Z-Axis (Vertical Up) -->
+    <line x1="300" y1="240" x2="300" y2="70" stroke="#0F172A" stroke-width="3.5" />
+    <polygon points="300,50 290,75 310,75" fill="#0F172A" />
+    <text x="300" y="38" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="800" font-size="28" fill="#0F172A" text-anchor="middle">Z</text>
+
+    <!-- Positive Y-Axis (Horizontal Right) -->
+    <line x1="300" y1="240" x2="470" y2="240" stroke="#0F172A" stroke-width="3.5" />
+    <polygon points="490,240 465,230 465,250" fill="#0F172A" />
+    <text x="515" y="249" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="800" font-size="28" fill="#0F172A" text-anchor="start">Y</text>
+
+    <!-- Positive X-Axis (Diagonal Down-Left 45deg) -->
+    <line x1="300" y1="240" x2="160" y2="380" stroke="#0F172A" stroke-width="3.5" />
+    <polygon points="145,395 155,368 172,385" fill="#0F172A" />
+    <text x="125" y="402" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="800" font-size="28" fill="#0F172A" text-anchor="end">X</text>
+  </g>
+
+  <!-- 2. 3D Faceted Isometric Letter 'A' -->
+  <g id="faceted-3d-letter-a">
+    <!-- Right 3D Extrusion Depth / Chamfer -->
+    <polygon points="300,120 326,145 425,365 372,365 292,185" fill="#1E293B" opacity="0.95" />
+    <!-- Outer Right Shadow Plane -->
+    <polygon points="326,145 342,160 442,365 425,365" fill="#0F172A" />
+    
+    <!-- Left Leg (Main Front Matte Surface) -->
+    <polygon points="300,120 175,365 232,365 285,260 315,260 300,120" fill="#111827" />
+
+    <!-- Right Leg Front Surface -->
+    <polygon points="300,120 326,145 292,185 345,300 425,365 372,365 300,215" fill="#1F2937" />
+
+    <!-- Crossbar -->
+    <polygon points="280,270 365,270 348,300 265,300" fill="#0F172A" />
+
+    <!-- Apex Top Facet Highlight -->
+    <polygon points="300,120 285,150 315,150" fill="#334155" />
+  </g>
+
+  <!-- 3. Wordmark: ACHSE -->
+  <g id="achse-wordmark" fill="#0F172A">
+    <!-- Letter A -->
+    <path d="M 50,490 L 105,420 L 145,420 L 145,436 L 115,436 L 90,470 L 145,470 L 145,490 L 50,490 Z M 95,462 L 125,462 L 115,444 Z" />
+    
+    <!-- Letter C -->
+    <path d="M 225,438 C 220,426 208,420 190,420 C 168,420 152,434 152,455 C 152,476 168,490 190,490 C 208,490 220,484 225,472 L 206,464 C 202,470 196,473 189,473 C 178,473 170,465 170,455 C 170,445 178,437 189,437 C 196,437 202,440 206,446 Z" />
+    
+    <!-- Letter H -->
+    <path d="M 238,420 L 256,420 L 256,446 L 290,446 L 290,420 L 308,420 L 308,490 L 290,490 L 290,464 L 256,464 L 256,490 L 238,490 Z" />
+
+    <!-- Letter S -->
+    <path d="M 322,473 C 326,483 336,490 352,490 C 368,490 379,481 379,469 C 379,458 371,452 355,448 L 345,445 C 336,443 331,439 331,433 C 331,425 338,420 348,420 C 358,420 366,425 369,433 L 385,425 C 380,413 367,405 348,405 C 329,405 315,417 315,433 C 315,446 324,454 339,458 L 349,460 C 360,463 363,467 363,471 C 363,476 357,479 349,479 C 340,479 334,475 330,468 Z" />
+
+    <!-- Letter E with signature 3-bars (Middle bar in contrasting silver-grey) -->
+    <!-- Top Bar -->
+    <rect x="395" y="420" width="65" height="17" rx="2" fill="#0F172A" />
+    <!-- Middle Bar (Accent Grey as in original logo) -->
+    <rect x="395" y="446.5" width="65" height="17" rx="2" fill="#808285" />
+    <!-- Bottom Bar -->
+    <rect x="395" y="473" width="65" height="17" rx="2" fill="#0F172A" />
+  </g>
+
+  <!-- 4. Tagline: PRECISION IN MOTION with Flanking Rules -->
+  <g id="achse-tagline" fill="#0F172A" stroke="#0F172A">
+    <!-- Left Flanking Rule -->
+    <line x1="48" y1="524" x2="105" y2="524" stroke-width="2" />
+    
+    <!-- Tagline Text -->
+    <text x="300" y="529" font-family="'Plus Jakarta Sans', Arial, sans-serif" font-weight="600" font-size="16" letter-spacing="7" fill="#0F172A" text-anchor="middle">PRECISION IN MOTION</text>
+    
+    <!-- Right Flanking Rule -->
+    <line x1="495" y1="524" x2="552" y2="524" stroke-width="2" />
+  </g>
+</svg>
