@@ -134,42 +134,61 @@ app.post('/api/quote-request', async (req: Request, res: Response) => {
   });
 });
 
+// Global process guards to prevent server crashing on transient network/db errors
+process.on('uncaughtException', (err) => {
+  console.error('Unhandled Server Exception (prevented crash):', err);
+});
+
+process.on('unhandledRejection', (reason) => {
+  console.error('Unhandled Promise Rejection (prevented crash):', reason);
+});
+
 async function startServer() {
-  const isProduction = process.env.NODE_ENV === 'production';
+  try {
+    const isProduction = process.env.NODE_ENV === 'production';
 
-  if (isProduction) {
-    app.use(express.static(path.resolve(__dirname, 'dist')));
-    app.get('*', (_req: Request, res: Response) => {
-      res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
-    });
-  } else {
-    // Dynamic import of Vite for development server
-    const { createServer: createViteServer } = await import('vite');
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: 'spa',
-    });
-    app.use(vite.middlewares);
-  }
-
-  app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server listening on http://0.0.0.0:${PORT}`);
-
-    // Test connection on startup if secrets are configured
-    const status = getDbConfigStatus();
-    if (status.hasHost && status.hasUser) {
-      console.log(`Connecting to MySQL at ${process.env.DB_HOST} with user ${process.env.DB_USER}...`);
-      testDbConnection()
-        .then((rows) => {
-          console.log('✅ MySQL connection query test succeeded:', rows);
-        })
-        .catch((err) => {
-          console.error('⚠️ MySQL connection test error on startup:', err.message);
-        });
+    if (isProduction) {
+      app.use(express.static(path.resolve(__dirname, 'dist')));
+      app.get('*', (_req: Request, res: Response) => {
+        res.sendFile(path.resolve(__dirname, 'dist', 'index.html'));
+      });
     } else {
-      console.log('ℹ️ MySQL database secrets (DB_HOST, DB_USER, DB_PASS, DB_NAME) pending configuration in environment variables.');
+      // Dynamic import of Vite for development server
+      const { createServer: createViteServer } = await import('vite');
+      const vite = await createViteServer({
+        server: { middlewareMode: true },
+        appType: 'spa',
+      });
+      app.use(vite.middlewares);
     }
-  });
+
+    const server = app.listen(PORT, '0.0.0.0', () => {
+      console.log(`Server listening on http://0.0.0.0:${PORT}`);
+
+      // Test connection on startup if secrets are configured
+      const status = getDbConfigStatus();
+      if (status.hasHost && status.hasUser) {
+        console.log(`Connecting to MySQL at ${process.env.DB_HOST} with user ${process.env.DB_USER}...`);
+        testDbConnection()
+          .then((rows) => {
+            console.log('✅ MySQL connection query test succeeded:', rows);
+          })
+          .catch((err) => {
+            console.error('⚠️ MySQL connection test error on startup:', err.message);
+          });
+      } else {
+        console.log('ℹ️ MySQL database secrets (DB_HOST, DB_USER, DB_PASS, DB_NAME) pending configuration in environment variables.');
+      }
+    });
+
+    server.on('error', (err: any) => {
+      console.error('HTTP Server listen error:', err);
+    });
+  } catch (startupError) {
+    console.error('Failed to start server:', startupError);
+  }
 }
 
-startServer();
+startServer().catch((err) => {
+  console.error('Fatal startServer error:', err);
+});
