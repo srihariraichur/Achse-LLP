@@ -258,11 +258,11 @@ export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       }
     }
 
-    // 3. Fallback demo/offline authentication
-    // Accepts official admin email or default admin credentials for review
+    // 3. Fallback authentication when Firebase is not configured
+    // Validates official admin email and configured password
     if (
       (trimmedEmail === 'srihari@achse.in' || trimmedEmail === 'admin@achse.in') &&
-      trimmedPass.length >= 6
+      trimmedPass === 'Sathya@12'
     ) {
       clearFailedAttempts();
       const mockAdmin: AdminUser = {
