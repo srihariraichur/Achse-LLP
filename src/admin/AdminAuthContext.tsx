@@ -52,15 +52,19 @@ export const AdminAuthProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   // Check existing lockout on load
   useEffect(() => {
-    const storedLockout = localStorage.getItem(LOCKOUT_TIMESTAMP_KEY);
-    if (storedLockout) {
-      const until = parseInt(storedLockout, 10);
-      if (until > Date.now()) {
-        setLockoutUntil(until);
-      } else {
-        localStorage.removeItem(LOCKOUT_TIMESTAMP_KEY);
-        localStorage.removeItem(FAILED_ATTEMPTS_KEY);
+    try {
+      const storedLockout = localStorage.getItem(LOCKOUT_TIMESTAMP_KEY);
+      if (storedLockout) {
+        const until = parseInt(storedLockout, 10);
+        if (until > Date.now()) {
+          setLockoutUntil(until);
+        } else {
+          localStorage.removeItem(LOCKOUT_TIMESTAMP_KEY);
+          localStorage.removeItem(FAILED_ATTEMPTS_KEY);
+        }
       }
+    } catch {
+      // Ignore storage access errors in restricted browser contexts
     }
   }, []);
 

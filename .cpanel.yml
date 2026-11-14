@@ -1,0 +1,6 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/$USER/public_html/
+    # Deploys compiled production assets directly into public_html for standard Apache/PHP hosting
+    - if [ -d "dist" ]; then /bin/cp -R dist/* $DEPLOYPATH; /bin/cp dist/.htaccess $DEPLOYPATH; else /bin/cp -R * $DEPLOYPATH; fi

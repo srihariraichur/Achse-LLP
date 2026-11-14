@@ -10,6 +10,7 @@
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import path from 'path';
+import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { getDbPool, getDbConfigStatus, testDbConnection } from './src/server/db.ts';
 
@@ -145,7 +146,9 @@ process.on('unhandledRejection', (reason) => {
 
 async function startServer() {
   try {
-    const isProduction = process.env.NODE_ENV === 'production';
+    const distIndex = path.resolve(__dirname, 'dist', 'index.html');
+    const hasDist = fs.existsSync(distIndex);
+    const isProduction = process.env.NODE_ENV === 'production' || (!__filename.endsWith('.ts') && hasDist);
 
     if (isProduction) {
       app.use(express.static(path.resolve(__dirname, 'dist')));

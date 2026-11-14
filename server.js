@@ -2,6 +2,7 @@
 import express from "express";
 import dotenv2 from "dotenv";
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 
 // src/server/db.ts
@@ -216,37 +217,54 @@ app.post("/api/quote-request", async (req, res) => {
     message: "Quote request logged (database pending configuration)"
   });
 });
+process.on("uncaughtException", (err) => {
+  console.error("Unhandled Server Exception (prevented crash):", err);
+});
+process.on("unhandledRejection", (reason) => {
+  console.error("Unhandled Promise Rejection (prevented crash):", reason);
+});
 async function startServer() {
-  const isProduction = process.env.NODE_ENV === "production";
-  if (isProduction) {
-    app.use(express.static(path.resolve(__dirname, "dist")));
-    app.get("*", (_req, res) => {
-      res.sendFile(path.resolve(__dirname, "dist", "index.html"));
-    });
-  } else {
-    const { createServer: createViteServer } = await import("vite");
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa"
-    });
-    app.use(vite.middlewares);
-  }
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server listening on http://0.0.0.0:${PORT}`);
-    const status = getDbConfigStatus();
-    if (status.hasHost && status.hasUser) {
-      console.log(`Connecting to MySQL at ${process.env.DB_HOST} with user ${process.env.DB_USER}...`);
-      testDbConnection().then((rows) => {
-        console.log("\u2705 MySQL connection query test succeeded:", rows);
-      }).catch((err) => {
-        console.error("\u26A0\uFE0F MySQL connection test error on startup:", err.message);
+  try {
+    const distIndex = path.resolve(__dirname, "dist", "index.html");
+    const hasDist = fs.existsSync(distIndex);
+    const isProduction = process.env.NODE_ENV === "production" || !__filename.endsWith(".ts") && hasDist;
+    if (isProduction) {
+      app.use(express.static(path.resolve(__dirname, "dist")));
+      app.get("*", (_req, res) => {
+        res.sendFile(path.resolve(__dirname, "dist", "index.html"));
       });
     } else {
-      console.log("\u2139\uFE0F MySQL database secrets (DB_HOST, DB_USER, DB_PASS, DB_NAME) pending configuration in environment variables.");
+      const { createServer: createViteServer } = await import("vite");
+      const vite = await createViteServer({
+        server: { middlewareMode: true },
+        appType: "spa"
+      });
+      app.use(vite.middlewares);
     }
-  });
+    const server = app.listen(PORT, "0.0.0.0", () => {
+      console.log(`Server listening on http://0.0.0.0:${PORT}`);
+      const status = getDbConfigStatus();
+      if (status.hasHost && status.hasUser) {
+        console.log(`Connecting to MySQL at ${process.env.DB_HOST} with user ${process.env.DB_USER}...`);
+        testDbConnection().then((rows) => {
+          console.log("\u2705 MySQL connection query test succeeded:", rows);
+        }).catch((err) => {
+          console.error("\u26A0\uFE0F MySQL connection test error on startup:", err.message);
+        });
+      } else {
+        console.log("\u2139\uFE0F MySQL database secrets (DB_HOST, DB_USER, DB_PASS, DB_NAME) pending configuration in environment variables.");
+      }
+    });
+    server.on("error", (err) => {
+      console.error("HTTP Server listen error:", err);
+    });
+  } catch (startupError) {
+    console.error("Failed to start server:", startupError);
+  }
 }
-startServer();
+startServer().catch((err) => {
+  console.error("Fatal startServer error:", err);
+});
 /**
  * @license
  * SPDX-License-Identifier: Apache-2.0

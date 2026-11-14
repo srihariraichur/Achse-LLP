@@ -1,0 +1,3 @@
+/api/health         /.netlify/functions/health         200!
+/api/quote-request  /.netlify/functions/quote-request  200!
+/*                  /index.html                        200

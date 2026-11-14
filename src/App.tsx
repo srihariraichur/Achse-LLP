@@ -67,7 +67,12 @@ export default function App() {
 
       setIsAdminRoute(false);
 
-      const routeKey = rawHash || (pathname !== '/' ? pathname.replace('/', '') : 'home');
+      const cleanPath = pathname.replace(/\/+$/, '') || '/';
+      const routeKey =
+        rawHash ||
+        (cleanPath !== '/' && cleanPath !== '/index.html'
+          ? cleanPath.replace(/^\//, '')
+          : 'home');
 
       if (['home', 'about', 'products', 'quality', 'contact'].includes(routeKey)) {
         setActiveTab(routeKey);
